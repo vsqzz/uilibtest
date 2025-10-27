@@ -4015,8 +4015,12 @@ getgenv().RayfieldThemes["LiquidGlass"] = function(MainFrame, ThemeOptions)
     local blurAmount = options.Blur or 12
 
     -- Apply base glassy appearance
-    MainFrame.BackgroundColor3 = tint
-    MainFrame.BackgroundTransparency = transparency
+    local frame = MainFrame:FindFirstChild("Background") or MainFrame:FindFirstChildOfClass("Frame") or MainFrame
+	if frame then
+    	frame.BackgroundColor3 = tint
+    	frame.BackgroundTransparency = transparency
+	end
+
 
     -- Create blur mask using ImageLabel layering
     local BlurLayer = Instance.new("ImageLabel")

@@ -644,7 +644,10 @@ local RayfieldLibrary = {
 		},
 	}
 }
-
+		
+if getgenv().RayfieldThemes and getgenv().RayfieldThemes[Theme] then
+    getgenv().RayfieldThemes[Theme](MainFrame, ThemeOptions)
+end
 
 -- Services
 local UserInputService = getService("UserInputService")
@@ -4004,8 +4007,8 @@ end)
     Adjustable Tint, Transparency, and Blur strength through ThemeOptions.
 --]]
 
-Rayfield.Themes = Rayfield.Themes or {}
-Rayfield.Themes["LiquidGlass"] = function(MainFrame, ThemeOptions)
+getgenv().RayfieldThemes = getgenv().RayfieldThemes or {}
+getgenv().RayfieldThemes["LiquidGlass"] = function(MainFrame, ThemeOptions)
     local options = ThemeOptions or {}
     local tint = options.Tint or Color3.fromRGB(255,255,255)
     local transparency = options.Transparency or 0.85

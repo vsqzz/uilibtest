@@ -4076,5 +4076,79 @@ getgenv().RayfieldThemes["LiquidGlass"] = function(MainFrame, ThemeOptions)
     Shadow.Parent = MainFrame
 end
 
-return RayfieldLibrary
 
+----------------------------------------------------------------
+-- 💎 Rayfield Built-in Theme: LiquidGlass (True UI Blur)
+----------------------------------------------------------------
+Rayfield.Themes = Rayfield.Themes or {}
+
+Rayfield.Themes["LiquidGlass"] = {
+    Name = "LiquidGlass",
+    Apply = function(Main, ThemeOptions)
+        local opt = ThemeOptions or {}
+        local tint = opt.Tint or Color3.fromRGB(255, 255, 255)
+        local transparency = opt.Transparency or 0.85
+        local blurIntensity = opt.Blur or 12
+
+        -- Target the main frame or background
+        local frame = Main:FindFirstChild("Background") or Main:FindFirstChildOfClass("Frame") or Main
+        if not frame then
+            warn("[LiquidGlass] Could not find MainFrame to apply blur theme")
+            return
+        end
+
+        -- Apply main glassy tint
+        frame.BackgroundColor3 = tint
+        frame.BackgroundTransparency = transparency
+
+        -- Create a true local blur using a ViewportFrame
+        local blurHolder = Instance.new("ViewportFrame")
+        blurHolder.Name = "LiquidGlassBlurLayer"
+        blurHolder.Size = UDim2.new(1, 0, 1, 0)
+        blurHolder.Position = UDim2.new(0, 0, 0, 0)
+        blurHolder.BackgroundTransparency = 1
+        blurHolder.LightInfluence = 0
+        blurHolder.Ambient = Color3.fromRGB(255, 255, 255)
+        blurHolder.ZIndex = 0
+        blurHolder.Parent = frame
+
+        local blurEffect = Instance.new("BlurEffect")
+        blurEffect.Size = blurIntensity
+        blurEffect.Parent = blurHolder
+
+        -- Rounded corners
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 16)
+        corner.Parent = frame
+
+        -- Add subtle gradient highlight
+        local grad = Instance.new("UIGradient")
+        grad.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(220,220,220))
+        }
+        grad.Rotation = 90
+        grad.Parent = frame
+
+        -- Slight luminous border
+        local stroke = Instance.new("UIStroke")
+        stroke.Thickness = 1.4
+        stroke.Color = Color3.fromRGB(255, 255, 255)
+        stroke.Transparency = 0.65
+        stroke.Parent = frame
+
+        -- Adjust text and buttons to be brighter
+        for _, descendant in ipairs(frame:GetDescendants()) do
+            if descendant:IsA("TextLabel") or descendant:IsA("TextButton") or descendant:IsA("TextBox") then
+                descendant.TextColor3 = Color3.fromRGB(245, 245, 245)
+            elseif descendant:IsA("Frame") or descendant:IsA("ScrollingFrame") then
+                descendant.BackgroundTransparency = math.clamp(transparency + 0.05, 0, 1)
+            end
+        end
+
+        print("[Rayfield] LiquidGlass theme applied successfully!")
+    end
+}
+----------------------------------------------------------------
+
+return RayfieldLibrary

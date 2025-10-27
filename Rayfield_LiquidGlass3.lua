@@ -764,6 +764,14 @@ local function ChangeTheme(Theme)
 	elseif typeof(Theme) == 'table' then
 		SelectedTheme = Theme
 	end
+			
+	if not Rayfield.Main then
+	    Rayfield.Main = Rayfield:FindFirstChild("Main") or Rayfield:FindFirstChildOfClass("Frame")
+	end
+	if not Rayfield.Main then
+	    warn("⚠️ Rayfield: Could not locate Main frame for theme rendering")
+	    return
+	end
 
 	Rayfield.Main.BackgroundColor3 = SelectedTheme.Background
 	Rayfield.Main.Topbar.BackgroundColor3 = SelectedTheme.Topbar
